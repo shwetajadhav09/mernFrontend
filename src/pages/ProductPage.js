@@ -7,6 +7,9 @@ import { useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import Loading from "../components/Loading";
 import SimilarProduct from "../components/SimilarProduct";
+import Review from "../components/Review";
+import ReviewForm from "../components/ReviewForm";
+import { getReviews } from '../axios';
 import "./ProductPage.css";
 import { LinkContainer } from "react-router-bootstrap";
 import { useAddToCartMutation } from "../services/appApi";
@@ -19,6 +22,11 @@ function ProductPage() {
     const [similar, setSimilar] = useState(null);
     const [addToCart, { isSuccess }] = useAddToCartMutation();
 
+     
+  
+    
+  
+    
     const handleDragStart = (e) => e.preventDefault();
     useEffect(() => {
         axios.get(`/products/${id}`).then(({ data }) => {
@@ -27,6 +35,7 @@ function ProductPage() {
         });
     }, [id]);
 
+    
     if (!product) {
         return <Loading />;
     }
@@ -84,6 +93,29 @@ function ProductPage() {
                     {isSuccess && <ToastMessage bg="info" title="Added to cart" body={`${product.name} is in your cart`} />}
                 </Col>
             </Row>
+          
+
+              {/* Reviews display */}
+      <div>
+        <h2>Reviews</h2>
+        {product.reviews &&
+          product.reviews.map(review => (
+            <div key={review._id}>
+              <p>User: {review.user}</p>
+              <p>Rating: {review.rating}</p>
+              <p>Comment: {review.comment}</p>
+            </div>
+          ))}
+      </div>
+
+      {/* Review form */}<div>
+      <ReviewForm productId={id}  />
+    </div>
+
+
+
+
+
             <div className="my-4">
                 <h2>Similar Products</h2>
                 <div className="d-flex justify-content-center align-items-center flex-wrap">

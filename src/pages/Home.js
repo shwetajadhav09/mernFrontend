@@ -9,6 +9,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { updateProducts } from "../features/productSlice";
 import ProductPreview from "../components/ProductPreview";
 
+
 function Home() {
     const dispatch = useDispatch();
     const products = useSelector((state) => state.products);

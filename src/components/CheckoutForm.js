@@ -31,7 +31,13 @@ function CheckoutForm() {
         const { paymentIntent } = await stripe.confirmCardPayment(client_secret, {
             payment_method: {
                 card: elements.getElement(CardElement),
+                
+
             },
+            
+
+            
+
         });
         setPaying(false);
 
@@ -40,7 +46,7 @@ function CheckoutForm() {
                 if (!isLoading && !isError) {
                     setAlertMessage(`Payment ${paymentIntent.status}`);
                     setTimeout(() => {
-                        // navigate("/orders");
+                        navigate("/orders");
                     }, 3000);
                 }
             });
