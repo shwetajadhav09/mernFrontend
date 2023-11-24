@@ -7,9 +7,10 @@ import { useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import Loading from "../components/Loading";
 import SimilarProduct from "../components/SimilarProduct";
-import Review from "../components/Review";
 import ReviewForm from "../components/ReviewForm";
-import { getReviews } from '../axios';
+import ReviewList from "../components/ReviewList";
+import Rating from "../components/Rating";
+
 import "./ProductPage.css";
 import { LinkContainer } from "react-router-bootstrap";
 import { useAddToCartMutation } from "../services/appApi";
@@ -22,7 +23,23 @@ function ProductPage() {
     const [similar, setSimilar] = useState(null);
     const [addToCart, { isSuccess }] = useAddToCartMutation();
 
-     
+   //new
+  
+   const [reviews, setReviews] = useState([]);
+
+   const fetchReviews = async () => {
+     try {
+       const response = await axios.get(`/api/products/${id}/reviews`);
+       setReviews(response.data);
+     } catch (error) {
+       console.error('Error fetching reviews:', error.message);
+     }
+   };
+ 
+   useEffect(() => {
+     fetchReviews();
+   }, [id]);
+ 
   
     
   
@@ -35,7 +52,6 @@ function ProductPage() {
         });
     }, [id]);
 
-    
     if (!product) {
         return <Loading />;
     }
@@ -96,20 +112,10 @@ function ProductPage() {
           
 
               {/* Reviews display */}
-      <div>
-        <h2>Reviews</h2>
-        {product.reviews &&
-          product.reviews.map(review => (
-            <div key={review._id}>
-              <p>User: {review.user}</p>
-              <p>Rating: {review.rating}</p>
-              <p>Comment: {review.comment}</p>
-            </div>
-          ))}
-      </div>
-
-      {/* Review form */}<div>
-      <ReviewForm productId={id}  />
+              <div>
+      {/* Other product details */}
+      <ReviewForm productId={id} refreshReviews={fetchReviews} />
+      <ReviewList reviews={reviews} />
     </div>
 
 

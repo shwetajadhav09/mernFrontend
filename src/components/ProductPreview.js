@@ -1,6 +1,7 @@
 import React from "react";
 import { Badge, Card } from "react-bootstrap";
 import { LinkContainer } from "react-router-bootstrap";
+import Rating from "./Rating";
 
 function ProductPreview({ _id, category, name, pictures }) {
     return (
@@ -13,6 +14,9 @@ function ProductPreview({ _id, category, name, pictures }) {
                         {category}
                     </Badge>
                 </Card.Body>
+                <Card.Text as="div">
+          
+        </Card.Text>
             </Card>
         </LinkContainer>
     );
